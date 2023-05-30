@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
+import { v4 as uuidv4 } from 'uuid';
 
-const credential = { username: 'username', password: 'password' };
+const credential = {
+  username: process.env.USERNAME || uuidv4(),
+  password: process.env.PASSWORD || uuidv4(),
+};
 
 const addUnauthorizedHeader = (res: Response) => {
   res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
