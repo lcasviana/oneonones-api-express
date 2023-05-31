@@ -1,6 +1,6 @@
 import express, { Request, RequestHandler, Response, Router } from 'express';
 import validator from 'validator';
-import Employee from '../../database/models/employee.model';
+import { Employee } from '../../database/models/employee.model';
 
 // GET /employees
 const getEmployees: RequestHandler = async (req: Request, res: Response) => {

@@ -2,13 +2,13 @@ import { DataTypes, Model } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import database from '../database';
 
-interface IEmployee {
+export interface IEmployee {
   id?: string;
   name?: string;
   email?: string;
 }
 
-class Employee extends Model<IEmployee> {}
+export class Employee extends Model<IEmployee> {}
 
 Employee.init(
   {
@@ -33,5 +33,3 @@ Employee.init(
     tableName: 'employees',
   },
 );
-
-export default Employee;

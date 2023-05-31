@@ -1,0 +1,6 @@
+{
+  "extension": ["ts"],
+  "package": "./package.json",
+  "timeout": "500",
+  "watch-files": ["test/**/*.spec.ts"]
+}
