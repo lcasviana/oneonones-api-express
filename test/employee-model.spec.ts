@@ -1,26 +1,26 @@
 import assert from 'assert';
 import * as R from 'ramda';
-import { v4 as uuidv4 } from 'uuid';
-import { Employee } from '../src/database/models/employee.model';
+import * as uuid from 'uuid';
+import { EmployeeModel } from '../src/models/employee.model';
 
 describe('Employee Model', async () => {
-  const employees: Array<Employee> = [];
+  const employees: Array<EmployeeModel> = [];
 
   before(async () => {
     [1, 2, 3].forEach(async () => {
-      const uuid: string = uuidv4().replace('-', '');
-      const employee = await Employee.create({ name: uuid, email: `${uuid}@email.test` });
+      const id: string = uuid.v4().replace('-', '');
+      const employee = await EmployeeModel.create({ name: id, email: `${id}@email.test` });
       employees.push(employee);
     });
   });
 
   after(async () => {
-    await Employee.destroy({ where: {}, truncate: true });
+    await EmployeeModel.destroy({ where: {}, truncate: true });
   });
 
   describe('findAll', async () => {
     it('should return all employees', async () => {
-      const employees = await Employee.findAll();
+      const employees = await EmployeeModel.findAll();
       assert.ok(employees.length > 0);
     });
   });
@@ -28,7 +28,7 @@ describe('Employee Model', async () => {
   describe('findOne', async () => {
     it('should return employee', async () => {
       const id = R.path([0, 'id'], employees) as string;
-      const employee = await Employee.findOne({ where: { id } });
+      const employee = await EmployeeModel.findOne({ where: { id } });
       assert.ok(employee);
     });
   });

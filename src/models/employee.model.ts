@@ -1,20 +1,20 @@
 import { DataTypes, Model } from 'sequelize';
-import { v4 as uuidv4 } from 'uuid';
+import * as uuid from 'uuid';
 import database from '../database';
 
-export interface IEmployee {
+export interface Employee {
   id?: string;
   name?: string;
   email?: string;
 }
 
-export class Employee extends Model<IEmployee> {}
+export class EmployeeModel extends Model<Employee> {}
 
-Employee.init(
+EmployeeModel.init(
   {
     id: {
       type: DataTypes.UUID,
-      defaultValue: () => uuidv4(),
+      defaultValue: () => uuid.v4(),
       primaryKey: true,
     },
     name: {

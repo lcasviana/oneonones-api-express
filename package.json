@@ -5,9 +5,9 @@
   "scripts": {
     "start": "nodemon",
     "build": "tsc",
-    "test": "mocha -r ts-node/register",
+    "test": "mocha",
     "lint": "eslint .",
-    "format": "prettier --write '{src,test}/**/*.ts'"
+    "format": "prettier -lw '{src,test}/**/*.ts'"
   },
   "dependencies": {
     "dotenv": "^16.1.1",

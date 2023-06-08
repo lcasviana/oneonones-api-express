@@ -1,32 +1,32 @@
-import express, { Request, RequestHandler, Response, Router } from 'express';
+import express, { Request, Response } from 'express';
 import validator from 'validator';
-import { Employee } from '../../database/models/employee.model';
+import { EmployeeModel } from '../../models/employee.model';
 
-// GET /employees
-const getEmployees: RequestHandler = async (req: Request, res: Response) => {
+const router = express.Router();
+
+router.get('/', (req: Request, res: Response) => {
   const { email } = req.query;
   if (email) {
     if (!validator.isEmail(email as string)) return res.sendStatus(400);
-    const employee = await Employee.findOne({ where: { email: email as string } });
-    if (!employee) return res.sendStatus(404);
-    return res.json(employee);
+    return EmployeeModel.findOne({ where: { email: email as string } })
+      .then((employee) => res.json(employee))
+      .catch((err: Error) => res.send(err));
   } else {
-    const employees = await Employee.findAll();
-    return res.json(employees);
+    return EmployeeModel.findAll()
+      .then((employees) => res.json(employees))
+      .catch((err: Error) => res.send(err));
   }
-};
+});
 
-// GET /employees/:id
-const getEmployeeById: RequestHandler = async (req: Request, res: Response) => {
+router.get('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   if (!validator.isUUID(id, 4)) return res.sendStatus(400);
-  const employee = await Employee.findOne({ where: { id } });
-  if (!employee) return res.sendStatus(404);
-  return res.json(employee);
-};
+  return EmployeeModel.findOne({ where: { id } })
+    .then((employee) => res.json(employee))
+    .catch((err: Error) => res.send(err));
+});
 
-// POST /employees
-const createEmployee: RequestHandler = async (req: Request, res: Response) => {
+router.post('/', (req: Request, res: Response) => {
   const { name, email } = req.body;
   if (
     validator.isEmpty(name, { ignore_whitespace: true }) ||
@@ -34,12 +34,12 @@ const createEmployee: RequestHandler = async (req: Request, res: Response) => {
     !validator.isEmail(email)
   )
     return res.sendStatus(400);
-  const employee = await Employee.create({ name, email });
-  res.status(201).json(employee);
-};
+  return EmployeeModel.create({ name, email })
+    .then((employee) => res.status(201).json(employee))
+    .catch((err: Error) => res.send(err));
+});
 
-// PUT /employees/:id
-const updateEmployee: RequestHandler = async (req: Request, res: Response) => {
+router.put('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   const { name, email } = req.body;
   if (!validator.isUUID(id, 4)) return res.sendStatus(400);
@@ -50,28 +50,19 @@ const updateEmployee: RequestHandler = async (req: Request, res: Response) => {
     !validator.isEmail(email)
   )
     return res.sendStatus(400);
-  const employee = await Employee.findOne({ where: { id } });
-  if (!employee) return res.sendStatus(404);
-  await Employee.update({ name, email }, { where: { id } });
-  return res.sendStatus(202);
-};
+  return EmployeeModel.update({ name, email }, { where: { id } })
+    .then(() => res.sendStatus(202))
+    .catch((err: Error) => res.send(err));
+});
 
-// DELETE /employees/:id
-const deleteEmployee: RequestHandler = async (req: Request, res: Response) => {
+router.delete('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   if (!validator.isUUID(id, 4)) return res.sendStatus(400);
-  const employee = await Employee.findOne({ where: { id } });
-  if (!employee) return res.sendStatus(404);
-  await Employee.destroy({ where: { id } });
-  return res.sendStatus(204);
-};
+  return EmployeeModel.destroy({ where: { id } })
+    .then(() => res.sendStatus(204))
+    .catch((err: Error) => res.send(err));
+});
 
-const router: Router = express.Router();
+router.use((_err: Error, _req: Request, res: Response) => res.sendStatus(500));
 
-router.get('/', getEmployees);
-router.get('/:id', getEmployeeById);
-router.post('/', createEmployee);
-router.put('/:id', updateEmployee);
-router.delete('/:id', deleteEmployee);
-
-export default router;
+export const employeeControllerV1 = router;

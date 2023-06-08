@@ -17,6 +17,6 @@
     "strictNullChecks": true,
     "target": "es6"
   },
-  "exclude": ["node_modules", "**/*.spec.ts"],
+  "exclude": ["dist", "node_modules", "test"],
   "include": ["src/**/*.ts"]
 }
