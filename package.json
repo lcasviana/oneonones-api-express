@@ -5,7 +5,7 @@
   "scripts": {
     "start": "nodemon",
     "build": "tsc",
-    "test": "mocha",
+    "test": "mocha 'test/**/*.spec.ts'",
     "lint": "eslint .",
     "format": "prettier -lw '{src,test}/**/*.ts'"
   },
@@ -19,9 +19,11 @@
     "validator": "^13.9.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
     "@types/express": "^4.17.17",
     "@types/mocha": "^10.0.1",
     "@types/ramda": "^0.29.2",
+    "@types/supertest": "^2.0.12",
     "@types/uuid": "^9.0.1",
     "@types/validator": "^13.7.17",
     "@typescript-eslint/eslint-plugin": "^5.59.8",
@@ -32,6 +34,7 @@
     "mocha": "^10.2.0",
     "nodemon": "^2.0.22",
     "prettier": "^2.8.8",
+    "supertest": "^6.3.3",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   }

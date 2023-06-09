@@ -2,7 +2,7 @@ import { Sequelize } from 'sequelize';
 
 const database = new Sequelize({
   dialect: 'sqlite',
-  storage: 'src/database/db.sqlite3',
+  storage: process.env.DATABASE,
   define: { timestamps: true },
   logging: false,
 });

@@ -1,5 +1,4 @@
 import { DataTypes, Model } from 'sequelize';
-import * as uuid from 'uuid';
 import database from '../database';
 
 export interface Employee {
@@ -14,17 +13,29 @@ EmployeeModel.init(
   {
     id: {
       type: DataTypes.UUID,
-      defaultValue: () => uuid.v4(),
       primaryKey: true,
+      allowNull: false,
+      defaultValue: DataTypes.UUIDV4,
+      validate: {
+        isUUID: 4,
+      },
     },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        is: /^[a-z][a-z'-.]{0,}( [a-z][a-z'-.]{0,}){0,}$/i,
+        len: [3, 255],
+      },
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
       unique: true,
+      allowNull: false,
+      validate: {
+        isEmail: true,
+        len: [3, 255],
+      },
     },
   },
   {
