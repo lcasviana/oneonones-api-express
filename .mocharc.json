@@ -1,7 +1,7 @@
 {
   "extension": ["ts"],
   "package": "./package.json",
-  "require": "ts-node/register",
-  "timeout": "500",
-  "watch-files": ["test/**/*.spec.ts"]
+  "require": ["ts-node/register", "dotenv/config"],
+  "timeout": "1000",
+  "file": ["test/setup.ts"]
 }

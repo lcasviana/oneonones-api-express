@@ -1,15 +1,14 @@
 import dotenv from 'dotenv';
 import express, { Application } from 'express';
-import { employeeControllerV1 } from './controllers/v1/employee.controller';
+import controllers from './controllers';
 import database from './database';
+import middleware from './middleware';
 
 dotenv.config();
 database.sync();
 
 const app: Application = express();
-const port = Number(process.env.PORT) || 3000;
-
 app.use(express.json());
-app.use('/v1/employee', employeeControllerV1);
+app.use('/v1/employee', middleware.authentication, controllers.v1.employee);
 
-app.listen(port, () => console.log(`http://localhost:${port}`));
+export default app;
